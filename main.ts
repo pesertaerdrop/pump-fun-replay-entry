@@ -43,7 +43,7 @@ import {
 
 // ------------------------------------------------------------------ constants
 
-const STAKE_LAMPORTS = (LAMPORTS_PER_SOL * 3n) / 10n; // 0.30 SOL per position
+const STAKE_LAMPORTS = LAMPORTS_PER_SOL / 2n; // 0.50 SOL per position
 const PROBE_LAMPORTS = LAMPORTS_PER_SOL / 50n; // 0.02 SOL probe round trip
 const MIN_BUY_LAMPORTS = LAMPORTS_PER_SOL / 200n; // 0.005 SOL floor on a buy
 const MAX_SLIPPAGE_BUY_BPS = 500;
