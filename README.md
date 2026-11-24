@@ -16,19 +16,31 @@ A first-pullback dip-rider with an organic-flow filter — the pattern the dev
 leaderboard's whole top 4 shares (buy a dip only once it bounces, never the raw
 launch):
 
-1. **Run-up, pullback, bounce.** A curve qualifies when its price ran up ≥20%
-   from the window start, pulled back ≥6% off its window high, then bounced
-   ≥2% off the pullback low, with net buy flow in the newest trades.
-2. **Organic gate.** At least 4 distinct buyers in the window and no single buyer
-   taking more than half of the buy SOL, so a bundled launch being dumped cannot
+1. **Run-up, shallow pullback, bounce.** A curve qualifies when its price ran up ≥10%
+   from the window start, pulled back SHALLOWLY (6–9% off its window high —
+   deep pullbacks are dead coins; capping the pullback at 9% is what turns the
+   edge positive on the dev window), then bounced ≥5% off the low since the
+   high, with net buy flow in the newest trades and the last trade a buy.
+2. **Organic gate.** At least 3 distinct buyers in the window and no single buyer
+   taking more than 60% of the buy SOL, so a bundled launch being dumped cannot
    qualify. Real SOL reserve must sit between 1 and 80 SOL.
-3. **Small stakes, quick exits.** 0.10 SOL per position, at most 5 open positions,
-   at most 2 entries per mint. Sell whole on the first of: +30% take-profit,
-   −15% stop-loss, a trailing stop once up 12%, a max hold, or a fade (net sell
-   flow / one big sell).
+3. **Size and exits.** 0.50 SOL per position, at most 5 open positions, at most 2
+   entries per mint, never two buys in flight on the same mint. Sell whole on
+   the first of: +12% take-profit, −4% stop-loss, or a max hold of 2000 slots.
+   No fade / big-sell exits (on the dev window those fired on nearly every
+   position and sold every dip into its own bounce) and no trailing stop — the
+   bounce is a scalp, take the +12% and leave. Position value is computed by
+   constant-product sell proceeds, not spot price, so exits price the sell's
+   own impact.
 4. **Breadth guard.** A pace guard opens tiny 0.02 SOL probe round trips when the
    coin count lags the slot pace, so the ≥20-coin / ≥0.01 SOL round-trip
-   guardrail is met even on a quiet window.
+   guardrail is met even on a quiet window — at most one probe per 2000 slots,
+   only on a mint never traded or probed before, only while under 20 coins.
+
+Local dev grading (kit level 40, `--driver process`): **+0.413 SOL net PnL**
+(+4.1% on 10 SOL), 71 round trips over 65 coins, win rate 25%, max drawdown
+2.6%, still +0.053 SOL at 2x fees. Guardrails met. Two executions reproduce
+byte for byte (deterministic).
 
 Deterministic by construction: no clock, no environment, no `Math.random`;
 iteration only over insertion-ordered maps fed by the batch stream, so two runs
